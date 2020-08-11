@@ -12,7 +12,7 @@ class UserStorage {
         throw Error('not implemented');
     }
     // eslint-disable-next-line no-unused-vars
-    getAutoSuggestUsers(searchTerm, limit) {
+    getUsers(searchTerm, limit) {
         throw Error('not implemented');
     }
 }

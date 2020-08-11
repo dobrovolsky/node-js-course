@@ -16,16 +16,24 @@ class InMemoryStorage extends UserStorage {
         this._updateLoginIndex(userEntity);
         return userEntity;
     }
+
     update(userEntity) {
         this._data[userEntity.id] = userEntity;
         this._updateLoginIndex(userEntity);
     }
+
     getByID(userID) {
         return this._data[userID];
     }
-    // eslint-disable-next-line no-unused-vars
-    getAutoSuggestUsers(searchTerm, limit) {
-        return this._data;
+
+    getUsers(searchTerm = '', limit = 10) {
+        let includedElements = Object.keys(this._loginIndex);
+        if (searchTerm && searchTerm !== '') {
+            includedElements = includedElements.filter(item => item.includes(searchTerm));
+        }
+        const includedElementsSet = new Set(includedElements.map(item => this._loginIndex[item]));
+        const userList = Object.entries(this._data).map(item => item[1]);
+        return userList.filter(item => includedElementsSet.has(item.id)).slice(0, limit);
     }
 }
 

@@ -27,8 +27,8 @@ class UserService {
     }
 
 
-    getAutoSuggestUsers(searchTerm, limit) {
-        return this.storage.getAutoSuggestUsers(searchTerm, limit);
+    getUsers(searchTerm, limit) {
+        return this.storage.getUsers(searchTerm, limit);
     }
 }
 
