@@ -1,5 +1,5 @@
 import UserStorage from './storage';
-
+// TODO: add filtering and don't forget about isDeleted flag
 class InMemoryStorage extends UserStorage {
     constructor() {
         super();
@@ -25,7 +25,6 @@ class InMemoryStorage extends UserStorage {
     }
     // eslint-disable-next-line no-unused-vars
     getAutoSuggestUsers(searchTerm, limit) {
-        // TODO: add filtering
         return this._data;
     }
 }
