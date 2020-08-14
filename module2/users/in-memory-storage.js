@@ -1,6 +1,5 @@
 import UserStorage from './storage';
-// TODO: add filtering and don't forget about isDeleted flag
-// TODO: add expections
+
 class InMemoryStorage extends UserStorage {
     constructor() {
         super();
@@ -24,7 +23,8 @@ class InMemoryStorage extends UserStorage {
     }
 
     update(userEntity) {
-        if (this._data[userEntity.id].isDeleted) {
+        const user = this.getByID(userEntity.id);
+        if (user.isDeleted) {
             throw Error('Not existing user');
         }
 
@@ -34,7 +34,7 @@ class InMemoryStorage extends UserStorage {
 
     getByID(userID) {
         const user = this._data[userID];
-        if (user.isDeleted) {
+        if (user.isDeleted || !user) {
             throw Error('Not existing user');
         }
 
@@ -48,7 +48,10 @@ class InMemoryStorage extends UserStorage {
         }
         const includedElementsSet = new Set(includedElements.map(item => this._loginIndex[item]));
         const userList = Object.entries(this._data).map(item => item[1]);
-        return userList.filter(item => includedElementsSet.has(item.id)).slice(0, limit);
+        const userCopiedList = userList.filter(item => includedElementsSet.has(item.id)).slice(0, limit).map(user => {
+            return { ...user };
+        });
+        return userCopiedList;
     }
 }
 
