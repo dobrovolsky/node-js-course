@@ -37,7 +37,7 @@ class InMemoryStorage extends IUserStorage {
         const filteredData = _.filter(this._data, item => {
             let matched = true;
             if (useSearch) {
-                matched = item.login.includes(searchTerm);
+                matched = item.login.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
             }
             return !item.isDeleted && matched;
         });
