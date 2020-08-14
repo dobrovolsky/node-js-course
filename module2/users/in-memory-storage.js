@@ -1,25 +1,15 @@
 import { NotFoundError } from './exceptions';
 import IUserStorage from './storage-interface';
+import _ from 'lodash';
 
 class InMemoryStorage extends IUserStorage {
     constructor() {
         super();
         this._data = {};
-        this._loginIndex = {};
-    }
-
-    _updateLoginIndex(userEntity) {
-        if (userEntity.isDeleted) {
-            delete this._loginIndex[userEntity.login];
-            return;
-        }
-
-        this._loginIndex[userEntity.login] = userEntity.id;
     }
 
     create(userEntity) {
         this._data[userEntity.id] = userEntity;
-        this._updateLoginIndex(userEntity);
         return { ...userEntity };
     }
 
@@ -30,7 +20,6 @@ class InMemoryStorage extends IUserStorage {
         }
 
         this._data[userEntity.id] = userEntity;
-        this._updateLoginIndex(userEntity);
     }
 
     getByID(userID) {
@@ -43,16 +32,19 @@ class InMemoryStorage extends IUserStorage {
     }
 
     getUsers(searchTerm = '', limit = 10) {
-        let includedElements = Object.keys(this._loginIndex);
-        if (searchTerm && searchTerm !== '') {
-            includedElements = includedElements.filter(item => item.includes(searchTerm));
-        }
-        const includedElementsSet = new Set(includedElements.map(item => this._loginIndex[item]));
-        const userList = Object.entries(this._data).map(item => item[1]);
-        const userCopiedList = userList.filter(item => includedElementsSet.has(item.id)).slice(0, limit).map(user => {
+        const useSearch = searchTerm && searchTerm !== '';
+
+        const filteredData = _.filter(this._data, item => {
+            let matched = true;
+            if (useSearch) {
+                matched = item.login.includes(searchTerm);
+            }
+            return !item.isDeleted && matched;
+        });
+
+        return filteredData.slice(0, limit).map(user => {
             return { ...user };
         });
-        return userCopiedList;
     }
 }
 
