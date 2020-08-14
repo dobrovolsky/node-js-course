@@ -1,6 +1,7 @@
-import UserStorage from './storage';
+import { NotFoundError } from './exceptions';
+import IUserStorage from './storage-interface';
 
-class InMemoryStorage extends UserStorage {
+class InMemoryStorage extends IUserStorage {
     constructor() {
         super();
         this._data = {};
@@ -25,7 +26,7 @@ class InMemoryStorage extends UserStorage {
     update(userEntity) {
         const user = this.getByID(userEntity.id);
         if (user.isDeleted) {
-            throw Error('Not existing user');
+            throw new NotFoundError();
         }
 
         this._data[userEntity.id] = userEntity;
@@ -34,8 +35,8 @@ class InMemoryStorage extends UserStorage {
 
     getByID(userID) {
         const user = this._data[userID];
-        if (user.isDeleted || !user) {
-            throw Error('Not existing user');
+        if (user && user.isDeleted || !user) {
+            throw new NotFoundError();
         }
 
         return { ...user };

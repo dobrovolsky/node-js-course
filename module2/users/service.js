@@ -1,5 +1,8 @@
 import User from './model';
 import { v4 as uuidv4 } from 'uuid';
+import InMemoryStorage from './in-memory-storage';
+
+const userStorage = new InMemoryStorage();
 
 
 class UserService {
@@ -32,4 +35,5 @@ class UserService {
     }
 }
 
-export default UserService;
+
+export const userService = new UserService(userStorage);

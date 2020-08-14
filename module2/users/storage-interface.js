@@ -1,4 +1,4 @@
-class UserStorage {
+class IUserStorage {
     // eslint-disable-next-line no-unused-vars
     getByID(userID) {
         throw Error('not implemented');
@@ -17,4 +17,4 @@ class UserStorage {
     }
 }
 
-export default UserStorage;
+export default IUserStorage;
