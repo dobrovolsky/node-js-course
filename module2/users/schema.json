@@ -1,0 +1,24 @@
+{
+  "$id": "http://module2.com/user.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "login": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string",
+      "description": "Password should contain at least 8 symbols, 1 lowercase, 1 uppercase, 1 number",
+      "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"
+    },
+    "age": {
+      "description": "Age in years which must be equal to or greater than zero.",
+      "type": "integer",
+      "minimum": 4,
+      "maximum": 130
+    }
+  },
+  "required": ["login", "password", "age"]
+}
