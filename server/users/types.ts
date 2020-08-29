@@ -16,3 +16,10 @@ export type ValidationError = {
   path: string;
   message: string;
 };
+
+export interface IUserStorage {
+  getByID(userID: userID): Promise<IUser>;
+  create(userEntity: UserCreation): Promise<IUser>;
+  update(userEntity: UserCreation): Promise<IUser>;
+  getUsers(searchTerm: string, limit: number): Promise<Array<IUser>>;
+}

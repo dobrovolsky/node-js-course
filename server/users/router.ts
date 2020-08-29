@@ -3,13 +3,13 @@ import express, { Response } from "express";
 import { NotFoundError } from "./exceptions";
 import UserValidator from "./validator";
 import { userService } from "./service";
-import { userID } from "./types";
+import { IUser, userID } from "./types";
 
 const userValidator = new UserValidator();
 
-function getOr404(userId: userID, res: Response) {
+async function getOr404(userId: userID, res: Response): Promise<IUser | null> {
   try {
-    return userService.getUserByID(userId);
+    return await userService.getUserByID(userId);
   } catch (e) {
     if (e instanceof NotFoundError) {
       res.status(404);
@@ -22,7 +22,7 @@ function getOr404(userId: userID, res: Response) {
 
 const userRouter = express.Router();
 
-userRouter.get("/", (req, res) => {
+userRouter.get("/", async (req, res) => {
   const userData = {
     limit: req.query.limit as string,
     s: req.query.loginSubstring as string,
@@ -35,11 +35,11 @@ userRouter.get("/", (req, res) => {
     limit = parsedLimit;
   }
 
-  const users = userService.getUsers(userData.s, limit);
+  const users = await userService.getUsers(userData.s, limit);
   res.json(users);
 });
 
-userRouter.post("/", (req, res) => {
+userRouter.post("/", async (req, res) => {
   const userData = req.body;
 
   const validator = userValidator.validateCreation(userData);
@@ -48,7 +48,7 @@ userRouter.post("/", (req, res) => {
     return;
   }
 
-  const user = userService.createUser(
+  const user = await userService.createUser(
     userData.login,
     userData.password,
     userData.age
@@ -56,9 +56,9 @@ userRouter.post("/", (req, res) => {
   res.json(user);
 });
 
-userRouter.get("/:id", (req, res) => {
+userRouter.get("/:id", async (req, res) => {
   const userData = req.params;
-  const user = getOr404(userData.id, res);
+  const user = await getOr404(userData.id, res);
   if (!user) {
     return;
   }
@@ -66,19 +66,19 @@ userRouter.get("/:id", (req, res) => {
   res.json(user);
 });
 
-userRouter.delete("/:id", (req, res) => {
+userRouter.delete("/:id", async (req, res) => {
   const userData = req.params;
 
-  const user = getOr404(userData.id, res);
+  const user = await getOr404(userData.id, res);
   if (!user) {
     return;
   }
 
-  userService.deleteUser(user);
+  await userService.deleteUser(user);
   res.status(204).end();
 });
 
-userRouter.patch("/:id", (req, res) => {
+userRouter.patch("/:id", async (req, res) => {
   const params = req.params;
   const userData = req.body;
 
@@ -88,13 +88,13 @@ userRouter.patch("/:id", (req, res) => {
     return;
   }
 
-  const user = getOr404(params.id, res);
+  const user = await getOr404(params.id, res);
   if (!user) {
     return;
   }
 
   const newUser = { ...user, ...userData };
-  userService.updateUser(newUser);
+  await userService.updateUser(newUser);
   res.json(newUser);
 });
 

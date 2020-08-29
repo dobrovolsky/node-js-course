@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import InMemoryStorage from "./in-memory-storage";
-import IUserStorage from "./storage-interface";
 import UserModel from "./model";
-import { userID, IUser } from "./types";
-const userStorage = new InMemoryStorage();
+import { userID, IUser, IUserStorage } from "./types";
+import PostgreSQLStorage from "./postgres-storage";
+
+const userStorage = new PostgreSQLStorage();
 
 class UserService {
   private storage: IUserStorage;
@@ -12,27 +12,31 @@ class UserService {
     this.storage = storage;
   }
 
-  createUser(login: string, password: string, age: number) {
+  async createUser(
+    login: string,
+    password: string,
+    age: number
+  ): Promise<IUser> {
     // TODO: add password hashing
     const user = new UserModel(uuidv4(), login, password, age);
-    return this.storage.create(user);
+    return await this.storage.create(user);
   }
 
-  deleteUser(user: IUser): IUser {
+  async deleteUser(user: IUser): Promise<IUser> {
     user.isDeleted = true;
-    return this.storage.update(user);
+    return await this.storage.update(user);
   }
 
-  updateUser(user: IUser): IUser {
-    return this.storage.update(user);
+  async updateUser(user: IUser): Promise<IUser> {
+    return await this.storage.update(user);
   }
 
-  getUserByID(id: userID): IUser {
-    return this.storage.getByID(id);
+  async getUserByID(id: userID): Promise<IUser> {
+    return await this.storage.getByID(id);
   }
 
-  getUsers(searchTerm: string, limit: number) {
-    return this.storage.getUsers(searchTerm, limit);
+  async getUsers(searchTerm: string, limit: number): Promise<Array<IUser>> {
+    return await this.storage.getUsers(searchTerm, limit);
   }
 }
 
