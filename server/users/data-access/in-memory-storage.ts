@@ -1,6 +1,6 @@
-import { NotFoundError } from "./exceptions";
 import _ from "lodash";
-import { IUser, userID, IUserStorage } from "./types";
+import { IUser, userID, IUserStorage } from "../types";
+import { NotFoundError } from "../exceptions";
 
 class InMemoryStorage implements IUserStorage {
   private readonly data: Record<string, IUser>;

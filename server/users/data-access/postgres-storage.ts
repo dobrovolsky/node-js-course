@@ -1,10 +1,7 @@
 import { Sequelize, Optional, Model, DataTypes, Op } from "sequelize";
-import { IUser, userID, IUserStorage } from "./types";
-import { NotFoundError } from "./exceptions";
-
-const sequelize = new Sequelize(
-  "postgres://postgres:password@localhost:5432/postgres"
-); // Example for postgres
+import { IUser, userID, IUserStorage } from "../types";
+import { NotFoundError } from "../exceptions";
+import { sequelize } from "../../database";
 
 type UserCreationAttributes = Optional<IUser, "id">;
 
