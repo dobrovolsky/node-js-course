@@ -1,6 +1,8 @@
 import _ from "lodash";
-import { IUser, userID, IUserStorage } from "../types";
+import { userID } from "../types";
 import { NotFoundError } from "../exceptions";
+import { IUserStorage } from "./interfaces";
+import { IUser } from "../models/interfaces";
 
 class InMemoryStorage implements IUserStorage {
   private readonly data: Record<string, IUser>;

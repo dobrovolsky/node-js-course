@@ -1,9 +1,10 @@
 import express, { Response } from "express";
 
-import { NotFoundError } from "./exceptions";
+import { NotFoundError } from "../exceptions";
 import UserValidator from "./validator";
-import { userService } from "./service";
-import { IUser, userID } from "./types";
+import { userService } from "..";
+import { userID } from "../types";
+import { IUser } from "../models/interfaces";
 
 const userValidator = new UserValidator();
 

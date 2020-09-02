@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import UserModel from "./model";
-import { userID, IUser, IUserStorage } from "./types";
-import PostgreSQLStorage from "./data-access/postgres-storage";
+import UserModel from "../models/userModel";
+import { userID } from "../types";
+import PostgreSQLStorage from "../data-access/postgres-storage";
+import { IUserStorage } from "../data-access/interfaces";
+import { IUser } from "../models/interfaces";
 
 const userStorage = new PostgreSQLStorage();
 
