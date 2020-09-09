@@ -1,12 +1,6 @@
-export type userID = string;
+import { IUser } from "./models/interfaces";
 
-export interface IUser {
-  id: userID;
-  login: string;
-  password: string;
-  age: number;
-  isDeleted: boolean;
-}
+export type userID = string;
 
 export type UserCreation = Partial<IUser>;
 

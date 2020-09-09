@@ -1,7 +1,7 @@
 import Ajv, { ValidateFunction } from "ajv";
 import _ from "lodash";
 
-import { requestData, ValidationError } from "./types";
+import { requestData, ValidationError } from "../types";
 
 import schemaUserCreation from "./schema.json";
 

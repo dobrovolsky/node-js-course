@@ -1,7 +1,8 @@
-import { NotFoundError } from "./exceptions";
-import IUserStorage from "./storage-interface";
 import _ from "lodash";
-import { IUser, userID } from "./types";
+import { userID } from "../types";
+import { NotFoundError } from "../exceptions";
+import { IUserStorage } from "./interfaces";
+import { IUser } from "../models/interfaces";
 
 class InMemoryStorage implements IUserStorage {
   private readonly data: Record<string, IUser>;
@@ -10,13 +11,13 @@ class InMemoryStorage implements IUserStorage {
     this.data = {};
   }
 
-  create(userEntity: IUser): IUser {
+  async create(userEntity: IUser): Promise<IUser> {
     this.data[userEntity.id] = userEntity;
     return { ...userEntity };
   }
 
-  update(userEntity: IUser): IUser {
-    const user = this.getByID(userEntity.id);
+  async update(userEntity: IUser): Promise<IUser> {
+    const user = await this.getByID(userEntity.id);
     if (user.isDeleted) {
       throw new NotFoundError();
     }
@@ -25,7 +26,7 @@ class InMemoryStorage implements IUserStorage {
     return userEntity;
   }
 
-  getByID(userId: userID): IUser {
+  async getByID(userId: userID): Promise<IUser> {
     const user = this.data[userId];
     if ((user && user.isDeleted) || !user) {
       throw new NotFoundError();
@@ -34,7 +35,7 @@ class InMemoryStorage implements IUserStorage {
     return { ...user };
   }
 
-  getUsers(searchTerm = "", limit = 10): Array<IUser> {
+  async getUsers(searchTerm = "", limit = 10): Promise<Array<IUser>> {
     const useSearch = searchTerm && searchTerm !== "";
 
     const filteredData = _.filter(this.data, (item: IUser) => {

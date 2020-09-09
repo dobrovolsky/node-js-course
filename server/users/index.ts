@@ -1,5 +1,4 @@
-import userRouter from "./router";
-import { userService } from "./service";
-import User from "./model";
+import userRouter from "./routers/router";
+import { userService } from "./services/userService";
 
-export { userRouter, User, userService };
+export { userRouter, userService };

@@ -1,7 +1,6 @@
-import app from './app';
+import app from "./app";
+import config from "./config/config";
 
-const port = 3000;
-
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+app.listen(config.port, () => {
+  console.log(`Server listening at http://localhost:${config.port}`);
 });

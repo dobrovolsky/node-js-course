@@ -1,4 +1,5 @@
-import { IUser, userID } from "./types";
+import { userID } from "../types";
+import { IUser } from "./interfaces";
 
 class User implements IUser {
   id: userID;
