@@ -1,9 +1,9 @@
 import { Sequelize, Op } from "sequelize";
 import { userID } from "../types";
 import { IUserStorage } from "./interfaces";
-import { NotFoundError } from "../exceptions";
 import User from "../models/userPostgresModel";
 import { IUser } from "../models/interfaces";
+import { NotFoundError } from "../../shared/exceptions";
 
 class PostgreSQLStorage implements IUserStorage {
   async create(userEntity: IUser): Promise<IUser> {

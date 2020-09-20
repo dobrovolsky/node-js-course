@@ -1,10 +1,10 @@
 import express, { Response } from "express";
 
-import { NotFoundError } from "../exceptions";
 import UserValidator from "./validator";
 import { userService } from "..";
 import { userID } from "../types";
 import { IUser } from "../models/interfaces";
+import { NotFoundError } from "../../shared/exceptions";
 
 const userValidator = new UserValidator();
 
@@ -94,7 +94,7 @@ userRouter.patch("/:id", async (req, res) => {
     return;
   }
 
-  const newUser = { ...user, ...userData };
+  const newUser = Object.assign(user, userData);
   await userService.updateUser(newUser);
   res.json(newUser);
 });
