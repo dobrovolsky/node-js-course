@@ -1,9 +1,10 @@
 import Ajv, { ValidateFunction } from "ajv";
 import _ from "lodash";
 
-import { requestData, ValidationError } from "../types";
+import { ValidationError } from "../types";
 
 import schemaUserCreation from "./schema.json";
+import { requestData } from "../../shared/types";
 
 const schemaUserUpdate = _.cloneDeep(schemaUserCreation);
 schemaUserUpdate.required = [];
