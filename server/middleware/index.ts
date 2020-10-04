@@ -1,3 +1,4 @@
 import { requestLogger } from "./logging";
+import { exceptionHandler } from "./exeption-handler";
 
-export { requestLogger };
+export { requestLogger, exceptionHandler };
