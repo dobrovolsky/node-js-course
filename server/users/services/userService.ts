@@ -22,7 +22,7 @@ class UserService {
     age: number
   ): Promise<IUser> {
     // TODO: add password hashing
-    const user = new UserModel("text", login, password, age);
+    const user = new UserModel(uuidv4(), login, password, age);
     return await this.storage.create(user);
   }
 
