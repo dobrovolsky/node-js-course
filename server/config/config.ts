@@ -8,4 +8,5 @@ export default {
   jtwSecretKey: process.env.JWT_SECRET_KEY || "",
   jwtAlgo: "HS256" as Algorithm,
   jwtTTL: 60 * 60 * 60, // 1h
+  allowedOrigin: process.env.ALLOWED_ORIGIN,
 };
