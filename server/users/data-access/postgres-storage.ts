@@ -2,7 +2,7 @@ import { Sequelize, Op } from "sequelize";
 import { userID } from "../types";
 import { IUserStorage } from "./interfaces";
 import User from "../models/userPostgresModel";
-import { IUser } from "../models/interfaces";
+import { IUser } from "..";
 import { NotFoundError } from "../../shared/exceptions";
 
 class PostgreSQLStorage implements IUserStorage {
@@ -20,6 +20,20 @@ class PostgreSQLStorage implements IUserStorage {
     if (!user) {
       throw new NotFoundError();
     }
+    return user;
+  }
+
+  async getByLoginPassword(login: string, password: string): Promise<IUser> {
+    const user = await User.findOne({
+      where: {
+        [Op.and]: [{ login: login }, { password: password }],
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundError();
+    }
+
     return user;
   }
 

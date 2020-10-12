@@ -42,6 +42,13 @@ class UserService {
     return await this.storage.getByID(id);
   }
 
+  async getUserByLoginPassword(
+    login: string,
+    password: string
+  ): Promise<IUser> {
+    return await this.storage.getByLoginPassword(login, password);
+  }
+
   @serviceLogger
   async getUsers(searchTerm: string, limit: number): Promise<Array<IUser>> {
     return await this.storage.getUsers(searchTerm, limit);

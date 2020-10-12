@@ -5,6 +5,7 @@ import { userService } from "..";
 import { userID } from "../types";
 import { IUser } from "../models/interfaces";
 import { NotFoundError } from "../../shared/exceptions";
+import { authenticateToken } from "../../auth/middleware";
 
 const userValidator = new UserValidator();
 
@@ -22,6 +23,8 @@ async function getOr404(userId: userID, res: Response): Promise<IUser | null> {
 }
 
 const userRouter = express.Router();
+
+userRouter.use(authenticateToken);
 
 userRouter.get("/", async (req, res) => {
   const userData = {

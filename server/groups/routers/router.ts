@@ -4,6 +4,7 @@ import { groupID } from "../types";
 import { IGroup } from "../models/interfaces";
 import { NotFoundError } from "../../shared/exceptions";
 import { groupService } from "../services/groupService";
+import { authenticateToken } from "../../auth/middleware";
 
 async function getOr404(id: groupID, res: Response): Promise<IGroup | null> {
   try {
@@ -19,6 +20,8 @@ async function getOr404(id: groupID, res: Response): Promise<IGroup | null> {
 }
 
 const groupRouter = express.Router();
+
+groupRouter.use(authenticateToken);
 
 groupRouter.get("/", async (req, res) => {
   const userData = {
