@@ -6,6 +6,7 @@ import { IGroup } from "../models/interfaces";
 import Group from "../models/groupModel";
 import { userID } from "../../users/types";
 import { sequelize } from "../../database";
+import { serviceLogger } from "../../shared/logging";
 
 const storage = new PostgreSQLStorage();
 
@@ -16,26 +17,33 @@ class GroupService {
     this.storage = storage;
   }
 
+  @serviceLogger
   async create(name: string, permissions: Array<Permission>): Promise<IGroup> {
     const entity = new Group(uuidv4(), name, permissions);
     return await this.storage.create(entity);
   }
 
+  @serviceLogger
   async delete(entity: IGroup): Promise<void> {
     return await this.storage.delete(entity);
   }
 
+  @serviceLogger
   async update(entity: IGroup): Promise<IGroup> {
     return await this.storage.update(entity);
   }
 
+  @serviceLogger
   async getByID(id: groupID): Promise<IGroup> {
     return await this.storage.getByID(id);
   }
 
+  @serviceLogger
   async getAll(limit: number): Promise<Array<IGroup>> {
     return await this.storage.getAll(limit);
   }
+
+  @serviceLogger
   async addUsersToGroup(
     groupId: groupID,
     userIds: Array<userID>
